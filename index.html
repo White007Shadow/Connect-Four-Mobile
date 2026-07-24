@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#070713">
+  <title>Connect4 Arena</title><link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="neon">
+<div id="app">
+<header class="site-header">
+<button id="homeButton" class="icon-button hidden">⌂</button>
+<div><h1>CONNECT4 ARENA</h1><p>Drop. Connect. Win.</p></div>
+<button id="settingsButton" class="icon-button">⚙</button>
+</header>
+<main>
+<section id="homeScreen" class="screen active">
+<div class="panel hero-card">
+<div class="profile-row"><div id="profileAvatar" class="avatar">P</div><div class="profile-copy"><strong id="profileDisplayName">Player</strong><span id="profileIdText">Guest profile</span></div><button id="editProfileButton" class="secondary-button">Profile</button></div>
+<div class="mode-grid">
+<button id="singlePlayerButton" class="mode-button"><b>🤖 Single Player</b><small>Easy, Medium or Hard AI</small></button>
+<button id="onlineButton" class="mode-button"><b>🌐 Online Multiplayer</b><small>Create, join or spectate</small></button>
+<button id="localButton" class="mode-button"><b>👥 Local Multiplayer</b><small>Two players, one device</small></button>
+<button id="tutorialButton" class="mode-button"><b>❔ How to Play</b><small>Rules and controls</small></button>
+</div></div>
+<div class="panel"><div class="section-heading"><h2>Your Statistics</h2><button id="resetStatsButton" class="text-button">Reset</button></div>
+<div class="stats-grid">
+<div><strong id="winsStat">0</strong><span>Wins</span></div><div><strong id="lossesStat">0</strong><span>Losses</span></div><div><strong id="drawsStat">0</strong><span>Draws</span></div>
+<div><strong id="gamesStat">0</strong><span>Games</span></div><div><strong id="streakStat">0</strong><span>Streak</span></div><div><strong id="bestStat">0</strong><span>Best</span></div>
+<div class="wide-stat"><strong id="winRateStat">0%</strong><span>Win rate</span></div></div></div>
+</section>
+
+<section id="setupScreen" class="screen"><div class="panel setup-panel"><h2 id="setupTitle">Game Setup</h2>
+<div id="singleSetup" class="hidden"><label>AI difficulty</label><div class="segmented"><button data-difficulty="easy">Easy</button><button data-difficulty="medium" class="selected">Medium</button><button data-difficulty="hard">Hard</button></div></div>
+<div id="localSetup" class="hidden"><label>Player 2 name<input id="localPlayer2Name" maxlength="18" placeholder="Player 2"></label>
+<div class="color-row"><label>Player 1 disc<input id="localColor1" type="color" value="#ff3158"></label><label>Player 2 disc<input id="localColor2" type="color" value="#ffd83d"></label></div></div>
+<button id="startSetupGameButton" class="primary-button">Start Game</button><button id="cancelSetupButton" class="secondary-button">Cancel</button></div></section>
+
+<section id="onlineScreen" class="screen"><div class="panel setup-panel"><h2>Online Multiplayer</h2>
+<div class="online-tabs"><button data-online-tab="create" class="selected">Create</button><button data-online-tab="join">Join</button><button data-online-tab="spectate">Spectate</button></div>
+<div id="createRoomPanel"><p>Create a room and share its code or invite link.</p><button id="createRoomButton" class="primary-button">Create Room</button></div>
+<div id="joinRoomPanel" class="hidden"><input id="joinCodeInput" maxlength="6" inputmode="numeric" placeholder="6-digit room code"><button id="joinRoomButton" class="primary-button">Join as Player</button></div>
+<div id="spectateRoomPanel" class="hidden"><input id="spectateCodeInput" maxlength="6" inputmode="numeric" placeholder="6-digit room code"><button id="spectateRoomButton" class="primary-button">Watch Match</button></div>
+<p id="onlineStatus" class="status-message"></p><button id="onlineBackButton" class="secondary-button">Back</button></div></section>
+
+<section id="lobbyScreen" class="screen"><div class="panel lobby-card"><p class="eyebrow">ROOM CODE</p><div class="room-code-row"><strong id="lobbyRoomCode">000000</strong><button id="copyCodeButton" class="icon-button">⧉</button></div><p id="lobbyStatus">Waiting for opponent…</p>
+<div class="share-row"><button id="copyInviteButton" class="secondary-button">Copy Invite</button><button id="whatsAppButton" class="secondary-button">WhatsApp</button></div><button id="leaveLobbyButton" class="danger-button">Leave Room</button></div></section>
+
+<section id="gameScreen" class="screen"><div class="game-layout"><div class="game-main">
+<div class="panel match-card">
+<div class="player-card"><span id="player1Disc" class="mini-disc"></span><div><strong id="player1Name">Player 1</strong><small id="player1Status">Ready</small></div><b id="player1Score">0</b></div>
+<div class="versus">VS</div>
+<div class="player-card"><span id="player2Disc" class="mini-disc"></span><div><strong id="player2Name">Player 2</strong><small id="player2Status">Ready</small></div><b id="player2Score">0</b></div>
+</div>
+<div class="panel turn-banner"><span id="modeBadge">LOCAL</span><strong id="turnMessage">Player 1's turn</strong><small id="roomInfo"></small></div>
+<div id="columnControls" class="column-controls"></div><div id="board" class="board"></div>
+<div class="game-actions"><button id="readyButton" class="primary-button hidden">Ready for Next Round</button><button id="newRoundButton" class="secondary-button">New Round</button><button id="leaveGameButton" class="danger-button">Leave</button></div>
+<p id="gameStatus" class="status-message"></p></div>
+<aside id="chatPanel" class="panel chat-panel hidden"><div class="section-heading"><h3>Room Chat</h3><span id="spectatorCount">0 watching</span></div><div id="messagesList" class="messages-list"></div>
+<div class="reaction-row"><button data-reaction="👍">👍</button><button data-reaction="🔥">🔥</button><button data-reaction="😂">😂</button><button data-reaction="😱">😱</button></div>
+<form id="chatForm"><input id="chatInput" maxlength="120" placeholder="Say something…"><button class="primary-button">Send</button></form></aside>
+</div></section>
+</main></div>
+
+<dialog id="profileDialog"><form method="dialog" class="dialog-card"><button class="dialog-close" value="cancel">×</button><h2>Player Profile</h2>
+<label>Display name<input id="profileNameInput" maxlength="18"></label><label>Disc color<input id="profileColorInput" type="color" value="#ff3158"></label><p class="helper">Your guest profile is saved on this device.</p>
+<button id="saveProfileButton" type="button" class="primary-button">Save Profile</button><hr><h3>Optional Account</h3><p class="helper">Connect an account to use it on other devices.</p>
+<button id="googleLoginButton" type="button" class="secondary-button">Continue with Google</button><button id="showEmailLoginButton" type="button" class="secondary-button">Email Account</button>
+<div id="emailAccountFields" class="hidden"><input id="emailInput" type="email" placeholder="Email"><input id="passwordInput" type="password" minlength="6" placeholder="Password"><div class="two-buttons"><button id="emailSignInButton" type="button" class="secondary-button">Sign In</button><button id="emailRegisterButton" type="button" class="secondary-button">Register</button></div></div><p id="accountStatus" class="status-message"></p></form></dialog>
+
+<dialog id="settingsDialog"><form method="dialog" class="dialog-card"><button class="dialog-close" value="cancel">×</button><h2>Appearance & Sound</h2>
+<label>Theme<select id="themeSelect"><option value="neon">Neon Gaming</option><option value="dark">Dark</option><option value="light">Light</option><option value="custom">Custom</option></select></label>
+<div id="customThemeControls" class="hidden custom-grid"><label>Background<input id="customBackground" type="color" value="#101020"></label><label>Panel<input id="customPanel" type="color" value="#20203a"></label><label>Board<input id="customBoard" type="color" value="#3454d1"></label><label>Button<input id="customButton" type="color" value="#7c3cff"></label><label>Text<input id="customText" type="color" value="#ffffff"></label><label>Accent<input id="customAccent" type="color" value="#31f7ff"></label></div>
+<label class="switch-row">Sound effects<input id="soundToggle" type="checkbox" checked></label><button id="saveSettingsButton" type="button" class="primary-button">Save Settings</button></form></dialog>
+
+<dialog id="tutorialDialog"><form method="dialog" class="dialog-card"><button class="dialog-close" value="cancel">×</button><h2>How to Play</h2><p>Drop a disc into a column. Connect four horizontally, vertically or diagonally.</p><p>In online games, both players press Ready after a round. Spectators may watch and chat.</p><button class="primary-button" value="close">Got It</button></form></dialog>
+
+<div id="winnerOverlay" class="winner-overlay hidden"><canvas id="confettiCanvas"></canvas><div class="winner-card"><p>ROUND COMPLETE</p><h2 id="winnerTitle">You Win!</h2><p id="winnerSubtitle"></p><button id="closeWinnerOverlay" class="primary-button">Continue</button></div></div>
+<div id="toast" class="toast hidden"></div>
+<script type="module" src="js/app.js"></script>
+</body></html>
