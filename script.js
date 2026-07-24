@@ -70,6 +70,27 @@ function emptyBoard() {
   return Array.from({ length: ROWS }, () => Array(COLS).fill(""));
 }
 
+// Firestore does not allow arrays inside arrays.
+// Store the 6x7 board as one flat array of 42 cells.
+function boardToFirestore(testBoard) {
+  return testBoard.flat();
+}
+
+function boardFromFirestore(savedBoard) {
+  if (!Array.isArray(savedBoard) || savedBoard.length !== ROWS * COLS) {
+    return emptyBoard();
+  }
+
+  const restoredBoard = [];
+
+  for (let row = 0; row < ROWS; row++) {
+    const start = row * COLS;
+    restoredBoard.push(savedBoard.slice(start, start + COLS));
+  }
+
+  return restoredBoard;
+}
+
 function showScreen(screen) {
   homeScreen.classList.remove("active");
   onlineScreen.classList.remove("active");
@@ -388,7 +409,7 @@ async function createRoom() {
   const roomRef = doc(db, "rooms", roomCode);
 
   await setDoc(roomRef, {
-    board: emptyBoard(),
+    board: boardToFirestore(emptyBoard()),
     currentPlayer: "R",
     status: "waiting",
     gameOver: false,
@@ -469,7 +490,7 @@ function listenToRoom() {
 
     roomData = snapshot.data();
     mode = "online";
-    board = roomData.board || emptyBoard();
+    board = boardFromFirestore(roomData.board);
     currentPlayer = roomData.currentPlayer || "R";
     gameOver = Boolean(roomData.gameOver);
 
@@ -521,7 +542,7 @@ async function makeOnlineMove(col) {
     return;
   }
 
-  const updatedBoard = copyBoard(roomData.board);
+  const updatedBoard = copyBoard(boardFromFirestore(roomData.board));
   const row = findOpenRow(updatedBoard, col);
 
   if (row === -1) {
@@ -538,7 +559,7 @@ async function makeOnlineMove(col) {
     const winnerName = myPiece === "R" ? player1 : player2;
 
     const changes = {
-      board: updatedBoard,
+      board: boardToFirestore(updatedBoard),
       gameOver: true,
       winner: winnerName
     };
@@ -555,7 +576,7 @@ async function makeOnlineMove(col) {
 
   if (isBoardFull(updatedBoard)) {
     await updateDoc(roomRef, {
-      board: updatedBoard,
+      board: boardToFirestore(updatedBoard),
       gameOver: true,
       winner: ""
     });
@@ -563,7 +584,7 @@ async function makeOnlineMove(col) {
   }
 
   await updateDoc(roomRef, {
-    board: updatedBoard,
+    board: boardToFirestore(updatedBoard),
     currentPlayer: myPiece === "R" ? "Y" : "R"
   });
 }
@@ -583,7 +604,7 @@ async function requestRematch() {
 
   if (data.rematch1 && data.rematch2) {
     await updateDoc(roomRef, {
-      board: emptyBoard(),
+      board: boardToFirestore(emptyBoard()),
       currentPlayer: "R",
       gameOver: false,
       winner: "",
