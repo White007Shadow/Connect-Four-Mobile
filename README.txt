@@ -1,22 +1,41 @@
-CONNECT FOUR MOBILE WEBSITE
+CONNECT FOUR ONLINE
 
-Files:
-- index.html
-- style.css
-- script.js
-
-How to test:
-1. Open index.html in a browser.
-2. Upload all three files to GitHub Pages, Netlify, or Vercel.
-3. Share the website link through WhatsApp.
-
-Included:
-- Player names
-- Score at the top
-- Current turn
-- 6 x 7 board
-- New Round
-- Reset Score
+This version includes:
+- Single Player against a simple AI
+- Local multiplayer on one phone
+- Online multiplayer on different phones
+- Six-digit room codes
+- WhatsApp invitation links
+- Win/loss and streak statistics
+- Score tracking
+- Rematch system
 - Tutorial
-- Win and draw detection
-- Mobile-friendly layout
+
+IMPORTANT FIREBASE SETUP
+
+1. Firebase Console -> Build -> Authentication
+2. Click Get Started
+3. Sign-in method -> Anonymous -> Enable
+
+4. Firebase Console -> Build -> Firestore Database
+5. Click Create Database
+6. Start in Test Mode for initial testing
+
+7. Upload index.html, style.css and script.js to your GitHub repository.
+8. Replace the old files.
+9. Commit the changes.
+10. Wait for GitHub Pages to redeploy.
+
+TEMPORARY FIRESTORE RULES FOR TESTING
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /rooms/{roomId} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+
+These rules are suitable for testing but should be improved before a public release.

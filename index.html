@@ -3,45 +3,82 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Connect Four</title>
+  <title>Connect Four Online</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="game">
-    <h1>Connect Four</h1>
+  <main class="app">
+    <section id="homeScreen" class="screen active">
+      <h1>CONNECT FOUR</h1>
+      <p class="small">Choose a game mode</p>
 
-    <div class="score">
-      <span id="player1Score">Player 1: 0</span>
-      <span id="player2Score">Player 2: 0</span>
-    </div>
+      <input id="playerName" class="input" type="text" maxlength="18" placeholder="Your name">
 
-    <p id="turnText">Player 1's turn</p>
+      <button id="singleBtn" class="main-btn">Single Player</button>
+      <button id="localBtn" class="main-btn">Local Multiplayer</button>
+      <button id="onlineBtn" class="main-btn">Online Multiplayer</button>
+      <button id="tutorialBtn" class="small-btn">Tutorial</button>
 
-    <div id="columnButtons" class="column-buttons"></div>
-    <div id="board" class="board"></div>
+      <div class="stats-box">
+        <b>Single Player Stats</b>
+        <p>Wins: <span id="statWins">0</span></p>
+        <p>Losses: <span id="statLosses">0</span></p>
+        <p>Current Streak: <span id="statStreak">0</span></p>
+        <p>Best Streak: <span id="statBest">0</span></p>
+      </div>
+    </section>
 
-    <div class="controls">
-      <button id="newRoundBtn">New Round</button>
-      <button id="resetScoreBtn">Reset Score</button>
-      <button id="tutorialBtn">Tutorial</button>
-    </div>
-  </div>
+    <section id="onlineScreen" class="screen">
+      <h2>Online Multiplayer</h2>
 
-  <dialog id="nameDialog">
-    <h2>Player Setup</h2>
-    <input id="player1Input" type="text" placeholder="Player 1 name">
-    <input id="player2Input" type="text" placeholder="Player 2 name">
-    <button id="startBtn">Start Game</button>
-  </dialog>
+      <button id="createRoomBtn" class="main-btn">Create Room</button>
+
+      <p>OR</p>
+
+      <input id="roomCodeInput" class="input" maxlength="6" placeholder="Enter room code">
+      <button id="joinRoomBtn" class="main-btn">Join Room</button>
+
+      <p id="onlineMessage" class="message"></p>
+
+      <button id="shareBtn" class="small-btn hidden">Share on WhatsApp</button>
+      <button id="copyBtn" class="small-btn hidden">Copy Invite Link</button>
+      <button id="onlineBackBtn" class="small-btn">Back</button>
+    </section>
+
+    <section id="gameScreen" class="screen">
+      <div class="top-row">
+        <button id="homeBtn" class="tiny-btn">Home</button>
+        <span id="modeLabel">Game</span>
+        <button id="tutorialGameBtn" class="tiny-btn">Tutorial</button>
+      </div>
+
+      <h2 id="scoreText">Player 1: 0 - Player 2: 0</h2>
+      <p id="roomText" class="small"></p>
+      <p id="turnText">Player 1's turn</p>
+      <p id="streakText" class="small"></p>
+
+      <div id="columnButtons" class="column-buttons"></div>
+      <div id="board" class="board"></div>
+
+      <div class="game-buttons">
+        <button id="newRoundBtn" class="small-btn">New Round</button>
+        <button id="rematchBtn" class="small-btn hidden">Rematch</button>
+        <button id="resetBtn" class="small-btn">Reset Score</button>
+      </div>
+
+      <p id="gameMessage" class="message"></p>
+    </section>
+  </main>
 
   <dialog id="tutorialDialog">
     <h2>How to Play</h2>
     <p>1. Tap a column number.</p>
-    <p>2. Your piece drops into that column.</p>
-    <p>3. Connect 4 pieces horizontally, vertically, or diagonally.</p>
-    <button id="closeTutorialBtn">Close</button>
+    <p>2. Your disc falls to the lowest empty place.</p>
+    <p>3. Connect four discs horizontally, vertically, or diagonally.</p>
+    <p>4. In online mode, share the room code or WhatsApp link.</p>
+    <button id="closeTutorialBtn" class="small-btn">Close</button>
   </dialog>
 
-  <script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
