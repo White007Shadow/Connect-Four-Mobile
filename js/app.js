@@ -3,6 +3,46 @@ import{loadPreferences,savePreferences,applyPreferences}from"./themes.js";
 import{ConnectGame,renderBoard,renderMatch}from"./game.js";import{chooseMove}from"./ai.js";import{OnlineRoom}from"./online.js";
 import{loginGoogle,loginEmail,registerEmail,ensureAuth}from"./firebase.js";import{showScreen,setOnlineTab,buildColumnControls,setGameStatus,showWinner,hideWinner}from"./ui.js";
 import{playSound,launchConfetti}from"./effects.js";import{emptyBoard,formatTime,showToast}from"./utils.js";
+
+const byId = id => document.getElementById(id);
+const {
+  singlePlayerButton, onlineButton, localButton, tutorialButton,
+  setupTitle, singleSetup, localSetup, startSetupGameButton,
+  localPlayer2Name, localColor1, localColor2,
+  onlineStatus, createRoomButton, joinRoomButton, spectateRoomButton,
+  joinCodeInput, spectateCodeInput, lobbyRoomCode, lobbyStatus,
+  copyCodeButton, copyInviteButton, whatsAppButton, leaveLobbyButton,
+  modeBadge, roomInfo, chatPanel, readyButton, newRoundButton,
+  turnMessage, spectatorCount, player1Status, player2Status,
+  messagesList, homeButton, leaveGameButton, cancelSetupButton,
+  onlineBackButton, closeWinnerOverlay, chatForm, chatInput,
+  editProfileButton, profileNameInput, profileColorInput, profileDialog,
+  saveProfileButton, showEmailLoginButton, emailAccountFields,
+  googleLoginButton, accountStatus, emailRegisterButton,
+  emailSignInButton, emailInput, passwordInput, settingsButton,
+  themeSelect, soundToggle, customThemeControls, customBackground,
+  customPanel, customBoard, customButton, customText, customAccent,
+  settingsDialog, saveSettingsButton, resetStatsButton, tutorialDialog
+} = Object.fromEntries([
+  "singlePlayerButton","onlineButton","localButton","tutorialButton",
+  "setupTitle","singleSetup","localSetup","startSetupGameButton",
+  "localPlayer2Name","localColor1","localColor2",
+  "onlineStatus","createRoomButton","joinRoomButton","spectateRoomButton",
+  "joinCodeInput","spectateCodeInput","lobbyRoomCode","lobbyStatus",
+  "copyCodeButton","copyInviteButton","whatsAppButton","leaveLobbyButton",
+  "modeBadge","roomInfo","chatPanel","readyButton","newRoundButton",
+  "turnMessage","spectatorCount","player1Status","player2Status",
+  "messagesList","homeButton","leaveGameButton","cancelSetupButton",
+  "onlineBackButton","closeWinnerOverlay","chatForm","chatInput",
+  "editProfileButton","profileNameInput","profileColorInput","profileDialog",
+  "saveProfileButton","showEmailLoginButton","emailAccountFields",
+  "googleLoginButton","accountStatus","emailRegisterButton",
+  "emailSignInButton","emailInput","passwordInput","settingsButton",
+  "themeSelect","soundToggle","customThemeControls","customBackground",
+  "customPanel","customBoard","customButton","customText","customAccent",
+  "settingsDialog","saveSettingsButton","resetStatsButton","tutorialDialog"
+].map(id => [id, byId(id)]));
+
 let profile=loadProfile(),preferences=loadPreferences(),mode="",difficulty="medium",scores={R:0,Y:0},recordedRound=null,overlayRound=null;
 applyPreferences(preferences);renderProfile(profile);renderStats(loadStats());
 const game=new ConnectGame(g=>{renderBoard(g);renderMatch(g,scores);updateTurn()},finishLocal);

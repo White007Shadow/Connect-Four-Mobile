@@ -4,5 +4,17 @@ export function saveProfile(p){const c={id:p.id,name:sanitizeName(p.name),color:
 export function loadStats(){return{wins:0,losses:0,draws:0,games:0,streak:0,best:0,...(JSON.parse(localStorage.getItem(SK)||"null")||{})}}
 export function recordResult(r){const s=loadStats();s.games++;if(r==="win"){s.wins++;s.streak++;s.best=Math.max(s.best,s.streak)}else if(r==="loss"){s.losses++;s.streak=0}else s.draws++;localStorage.setItem(SK,JSON.stringify(s));return s}
 export function resetStats(){localStorage.removeItem(SK);return loadStats()}
-export function renderProfile(p){profileDisplayName.textContent=p.name;profileIdText.textContent=`Player ID: ${p.id}`;profileAvatar.textContent=p.name[0].toUpperCase()}
-export function renderStats(s){winsStat.textContent=s.wins;lossesStat.textContent=s.losses;drawsStat.textContent=s.draws;gamesStat.textContent=s.games;streakStat.textContent=s.streak;bestStat.textContent=s.best;winRateStat.textContent=s.games?`${Math.round(s.wins/s.games*100)}%`:"0%"}
+export function renderProfile(p){
+  document.getElementById("profileDisplayName").textContent=p.name;
+  document.getElementById("profileIdText").textContent=`Player ID: ${p.id}`;
+  document.getElementById("profileAvatar").textContent=p.name[0].toUpperCase();
+}
+export function renderStats(s){
+  document.getElementById("winsStat").textContent=s.wins;
+  document.getElementById("lossesStat").textContent=s.losses;
+  document.getElementById("drawsStat").textContent=s.draws;
+  document.getElementById("gamesStat").textContent=s.games;
+  document.getElementById("streakStat").textContent=s.streak;
+  document.getElementById("bestStat").textContent=s.best;
+  document.getElementById("winRateStat").textContent=s.games?`${Math.round(s.wins/s.games*100)}%`:"0%";
+}

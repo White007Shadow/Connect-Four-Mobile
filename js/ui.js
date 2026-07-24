@@ -1,4 +1,51 @@
-const screens={home:homeScreen,setup:setupScreen,online:onlineScreen,lobby:lobbyScreen,game:gameScreen};export function showScreen(n){Object.values(screens).forEach(s=>s.classList.remove("active"));screens[n].classList.add("active");homeButton.classList.toggle("hidden",n==="home");scrollTo({top:0,behavior:"smooth"})}
-export function setOnlineTab(t){document.querySelectorAll("[data-online-tab]").forEach(b=>b.classList.toggle("selected",b.dataset.onlineTab===t));createRoomPanel.classList.toggle("hidden",t!=="create");joinRoomPanel.classList.toggle("hidden",t!=="join");spectateRoomPanel.classList.toggle("hidden",t!=="spectate")}
-export function buildColumnControls(h){columnControls.innerHTML="";for(let c=0;c<7;c++){const b=document.createElement("button");b.textContent="▼";b.addEventListener("click",()=>h(c));columnControls.appendChild(b)}}
-export const setGameStatus=m=>gameStatus.textContent=m||"";export function showWinner(t,s){winnerTitle.textContent=t;winnerSubtitle.textContent=s;winnerOverlay.classList.remove("hidden")}export const hideWinner=()=>winnerOverlay.classList.add("hidden");
+const get = id => document.getElementById(id);
+
+const screens = {
+  home: get("homeScreen"),
+  setup: get("setupScreen"),
+  online: get("onlineScreen"),
+  lobby: get("lobbyScreen"),
+  game: get("gameScreen")
+};
+
+export function showScreen(name) {
+  Object.values(screens).forEach(screen => screen.classList.remove("active"));
+  screens[name].classList.add("active");
+  get("homeButton").classList.toggle("hidden", name === "home");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+export function setOnlineTab(tab) {
+  document.querySelectorAll("[data-online-tab]").forEach(button => {
+    button.classList.toggle("selected", button.dataset.onlineTab === tab);
+  });
+  get("createRoomPanel").classList.toggle("hidden", tab !== "create");
+  get("joinRoomPanel").classList.toggle("hidden", tab !== "join");
+  get("spectateRoomPanel").classList.toggle("hidden", tab !== "spectate");
+}
+
+export function buildColumnControls(handler) {
+  const controls = get("columnControls");
+  controls.innerHTML = "";
+  for (let column = 0; column < 7; column++) {
+    const button = document.createElement("button");
+    button.textContent = "▼";
+    button.setAttribute("aria-label", `Drop disc in column ${column + 1}`);
+    button.addEventListener("click", () => handler(column));
+    controls.appendChild(button);
+  }
+}
+
+export function setGameStatus(message) {
+  get("gameStatus").textContent = message || "";
+}
+
+export function showWinner(title, subtitle) {
+  get("winnerTitle").textContent = title;
+  get("winnerSubtitle").textContent = subtitle;
+  get("winnerOverlay").classList.remove("hidden");
+}
+
+export function hideWinner() {
+  get("winnerOverlay").classList.add("hidden");
+}
